@@ -81,19 +81,18 @@ def v_dodatnich():
 macierz_ujemna=v_ujemnych()
 macierz_dodatnia=v_dodatnich()
 macierz_Vc=macierz_dodatnia+macierz_ujemna
-print(macierz_Vc)
-print(macierz_Vc.shape)
-X=np.linspace(0,10,10)
-Y=np.linspace(0,10,10)
-X,Y=np.meshgrid(X,Y)
-fig = plt.figure(figsize=(10,10))
-ax = plt.axes(projection="3d")
-ax.scatter(x_ujemne,y_ujemne,z_ujemne,color="blue",marker="X")
+# print(macierz_Vc)
+# print(macierz_Vc.shape)
+
+fig = plt.figure(figsize=plt.figaspect(2.))
+fig.suptitle('Rozmieszczenie ładunków w przestrzeni i izolinie potencjału elektrycznego')
+ax = fig.add_subplot(2, 1, 1,projection="3d")
+ax.scatter(x_ujemne,y_ujemne,z_ujemne,color="blue")
 ax.scatter(x_dodatnie,y_dodatnie,z_dodatnie,color="red")
-
-
-
-plt.show()
-
-plt.contour(macierz_Vc,levels=10)
+ax = fig.add_subplot(2, 1, 2)
+X=np.linspace(1,10,10)
+Y=np.linspace(1,10,10)
+X,Y=np.meshgrid(X,Y)
+izolonia=ax.contourf(X,Y,macierz_Vc,levels=50,extent=[0,20,0,20],cmap="plasma")
+# izolinia=ax.imshow(macierz_Vc,extent=[0,20,0,20],cmap="plasma")
 plt.show()
