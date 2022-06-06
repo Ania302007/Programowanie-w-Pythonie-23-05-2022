@@ -52,6 +52,10 @@ z_ujemne=współrzędne()[2]
 x_dodatnie=współrzędne()[3]
 y_dodatnie=współrzędne()[4]
 z_dodatnie=współrzędne()[5]
+dod_pusta=[0]
+uj_pusta=[]
+dod_spr=[(dodatnie[0])]
+uj_spr=[(ujemne[0])]
 # print(x_ujemne)
 # print(y_ujemne)
 # print(z_ujemne)
@@ -61,22 +65,27 @@ z_dodatnie=współrzędne()[5]
 #
 #
 def v_ujemnych():
-    płaszczyznaXY_ujemne=np.zeros((10, 10))
-    for m in range(0,10):
-        for n in range(0,10):
+    płaszczyznaXY_ujemne=np.zeros((100, 100))
+    range1=np.linspace(0,10,100)
+    l_range1=list(range1)
+    for m in range1:
+        for n in range1:
             for l in ujemne:
                 r=np.sqrt((l[0]-m)**2+(l[1]-n)**2+l[2]**2)
                 V=(9*10**9)*(-1/r)
-                płaszczyznaXY_ujemne[m, n] +=V
+                płaszczyznaXY_ujemne[l_range1.index(m), l_range1.index(n)] +=V
     return płaszczyznaXY_ujemne
+
 def v_dodatnich():
-    płaszczyznaXY_dodatnie=np.zeros((10,10))
-    for m in range(0,10):
-        for n in range(0,10):
+    płaszczyznaXY_dodatnie=np.zeros((100,100))
+    range1 = np.linspace(0, 10, 100)
+    l_range1 = list(range1)
+    for m in range1:
+        for n in range1:
             for l in dodatnie:
                 r=np.sqrt((l[0]-m)**2+(l[1]-n)**2+l[2]**2)
                 V=(9*10**9)*(1/r)
-                płaszczyznaXY_dodatnie[m, n] +=V
+                płaszczyznaXY_dodatnie[l_range1.index(m), l_range1.index(n)] +=V
     return płaszczyznaXY_dodatnie
 macierz_ujemna=v_ujemnych()
 macierz_dodatnia=v_dodatnich()
@@ -86,13 +95,14 @@ macierz_Vc=macierz_dodatnia+macierz_ujemna
 
 fig = plt.figure(figsize=plt.figaspect(2.))
 fig.suptitle('Rozmieszczenie ładunków w przestrzeni i izolinie potencjału elektrycznego')
-ax = fig.add_subplot(2, 1, 1,projection="3d")
+ax = fig.add_subplot(2, 2, 1,projection="3d")
 ax.scatter(x_ujemne,y_ujemne,z_ujemne,color="blue")
 ax.scatter(x_dodatnie,y_dodatnie,z_dodatnie,color="red")
-ax = fig.add_subplot(2, 1, 2)
-X=np.linspace(1,10,10)
-Y=np.linspace(1,10,10)
+ax = fig.add_subplot(2, 2, 3)
+X=np.linspace(1,10,100)
+Y=np.linspace(1,10,100)
 X,Y=np.meshgrid(X,Y)
-izolonia=ax.contourf(X,Y,macierz_Vc,levels=50,extent=[0,20,0,20],cmap="plasma")
-# izolinia=ax.imshow(macierz_Vc,extent=[0,20,0,20],cmap="plasma")
+# izolonia=ax.contourf(X,Y,macierz_Vc,levels=100 ,cmap="plasma")
+# ax = fig.add_subplot(2, 2, 4)
+izolinia2=ax.imshow(macierz_Vc,extent=[0,10,0,10],cmap="plasma")
 plt.show()
