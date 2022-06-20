@@ -3,18 +3,20 @@ from mpl_toolkits import mplot3d
 import numpy as np
 
 
-def poj_ładunki():
-    pojedyńczy_ładunek = []
+def poj_ladunki():
+    pojedyńczy_ladunek = []
     for _ in range(10):
-        pojedyńczy_ładunek.append(np.random.uniform(low=0, high=10, size=3))
-    # print(pojedyńczy_ładunek)
-    return pojedyńczy_ładunek
-pojedyńczy_ładunek=poj_ładunki()
+        pojedyńczy_ladunek.append(np.random.uniform(low=0, high=10, size=3))
+    return pojedyńczy_ladunek
 
-def ładunek():
+
+pojedyńczy_ladunek = poj_ladunki()
+
+
+def ladunek():
     dodatnie = []
     ujemne = []
-    for i in pojedyńczy_ładunek:
+    for i in pojedyńczy_ladunek:
         znak = i * np.random.choice([-1, 1])
         if znak[0] < 0:
             ujemne.append(i)
@@ -22,13 +24,13 @@ def ładunek():
             dodatnie.append(i)
     return ujemne, dodatnie
 
-oba_ładunki=ładunek()
-ujemne=oba_ładunki[0]
-# print(ujemne)
-dodatnie=oba_ładunki[1]
-# print(dodatnie)
 
-def współrzędne():
+oba_ladunki = ladunek()
+ujemne = oba_ladunki[0]
+dodatnie = oba_ladunki[1]
+
+
+def wspolrzedne():
     x_dodatnie = []
     y_dodatnie = []
     z_dodatnie = []
@@ -43,66 +45,63 @@ def współrzędne():
         x_dodatnie.append(k[0])
         y_dodatnie.append(k[1])
         z_dodatnie.append(k[2])
-    return x_ujemne, y_ujemne, z_ujemne,x_dodatnie, y_dodatnie, z_dodatnie
+    return x_ujemne, y_ujemne, z_ujemne, x_dodatnie, y_dodatnie, z_dodatnie
 
-współrzędne()
-x_ujemne=współrzędne()[0]
-y_ujemne=współrzędne()[1]
-z_ujemne=współrzędne()[2]
-x_dodatnie=współrzędne()[3]
-y_dodatnie=współrzędne()[4]
-z_dodatnie=współrzędne()[5]
-dod_pusta=[0]
-uj_pusta=[]
-dod_spr=[(dodatnie[0])]
-uj_spr=[(ujemne[0])]
-# print(x_ujemne)
-# print(y_ujemne)
-# print(z_ujemne)
-# print(x_dodatnie)
-# print(y_dodatnie)
-# print(z_dodatnie)
-#
-#
+
+wspolrzedne()
+x_ujemne = wspolrzedne()[0]
+y_ujemne = wspolrzedne()[1]
+z_ujemne = wspolrzedne()[2]
+x_dodatnie = wspolrzedne()[3]
+y_dodatnie = wspolrzedne()[4]
+z_dodatnie = wspolrzedne()[5]
+dod_spr = [(4, 4, 4)]
+uj_spr = [(5, 5, 4)]
+
+
 def v_ujemnych():
-    płaszczyznaXY_ujemne=np.zeros((100, 100))
-    range1=np.linspace(0,10,100)
-    l_range1=list(range1)
+    plaszczyzna_xy_ujemne = np.zeros((100, 100))
+    range1 = np.linspace(0, 10, 100)
+    l_range1 = list(range1)
     for m in range1:
         for n in range1:
             for l in ujemne:
-                r=np.sqrt((l[0]-m)**2+(l[1]-n)**2+l[2]**2)
-                V=(9*10**9)*(-1/r)
-                płaszczyznaXY_ujemne[l_range1.index(m), l_range1.index(n)] +=V
-    return płaszczyznaXY_ujemne
+                r = np.sqrt((l[0] - m) ** 2 + (l[1] - n) ** 2 + l[2] ** 2)
+                V = (9 * 10 ** 9) * (-1 / r)
+                plaszczyzna_xy_ujemne[l_range1.index(m), l_range1.index(n)] += V
+    return plaszczyzna_xy_ujemne
+
 
 def v_dodatnich():
-    płaszczyznaXY_dodatnie=np.zeros((100,100))
+    plaszczyznaXY_dodatnie = np.zeros((100, 100))
     range1 = np.linspace(0, 10, 100)
     l_range1 = list(range1)
     for m in range1:
         for n in range1:
             for l in dodatnie:
-                r=np.sqrt((l[0]-m)**2+(l[1]-n)**2+l[2]**2)
-                V=(9*10**9)*(1/r)
-                płaszczyznaXY_dodatnie[l_range1.index(m), l_range1.index(n)] +=V
-    return płaszczyznaXY_dodatnie
-macierz_ujemna=v_ujemnych()
-macierz_dodatnia=v_dodatnich()
-macierz_Vc=macierz_dodatnia+macierz_ujemna
-# print(macierz_Vc)
-# print(macierz_Vc.shape)
+                r = np.sqrt((l[0] - m) ** 2 + (l[1] - n) ** 2 + l[2] ** 2)
+                V = (9 * 10 ** 9) * (1 / r)
+                plaszczyznaXY_dodatnie[l_range1.index(m), l_range1.index(n)] += V
+    return plaszczyznaXY_dodatnie
+
+
+macierz_ujemna = v_ujemnych()
+macierz_dodatnia = v_dodatnich()
+macierz_Vc = macierz_dodatnia + macierz_ujemna
+
 
 fig = plt.figure(figsize=plt.figaspect(2.))
-fig.suptitle('Rozmieszczenie ładunków w przestrzeni i izolinie potencjału elektrycznego')
-ax = fig.add_subplot(2, 2, 1,projection="3d")
-ax.scatter(x_ujemne,y_ujemne,z_ujemne,color="blue")
-ax.scatter(x_dodatnie,y_dodatnie,z_dodatnie,color="red")
-ax = fig.add_subplot(2, 2, 3)
-X=np.linspace(1,10,100)
-Y=np.linspace(1,10,100)
-X,Y=np.meshgrid(X,Y)
-# izolonia=ax.contourf(X,Y,macierz_Vc,levels=100 ,cmap="plasma")
-# ax = fig.add_subplot(2, 2, 4)
-izolinia2=ax.imshow(macierz_Vc,extent=[0,10,0,10],cmap="plasma")
+ax = fig.add_subplot(1, 2, 1, projection="3d")
+ax.scatter(x_ujemne, y_ujemne, z_ujemne, color="blue")
+ax.scatter(x_dodatnie, y_dodatnie, z_dodatnie, color="red")
+ax.set_title("Rozmieszczenie ładunków w przestrzeni")
+ax = fig.add_subplot(1, 2, 2)
+ax.set_aspect('equal', 'box')
+ax.set_title("Izolinie potencjału elektrycznego")
+X = np.linspace(1, 10, 100)
+Y = np.linspace(1, 10, 100)
+X, Y = np.meshgrid(X, Y)
+izolonia = ax.contourf(X, Y, macierz_Vc, levels=100, cmap="plasma")
+cbar = fig.colorbar(izolonia, orientation="horizontal", pad=0.1)
+cbar.ax.set_xlabel('potencjał elektryczny')
 plt.show()
